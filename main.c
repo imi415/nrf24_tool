@@ -1,16 +1,20 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <string.h>
 #include <unistd.h>
 #include <stdbool.h>
 #include <getopt.h>
 
 #include "nrf24_api.h"
 
-static const char *const shortopts = "+hvtr";
+static const char *const shortopts = "+hvm:s:f:tr";
 
 static const struct option longopts[] = {
         {"help", no_argument, NULL, 'h'},
         {"version", no_argument, NULL, 'v'},
+        {"mode", required_argument, NULL, 'm'},
+        {"tx-address", required_argument, NULL, 's'},
+        {"rx-address", required_argument, NULL, 'f'},
         {"tx", no_argument, NULL, 't'},
         {"rx", no_argument, NULL, 'r'}
 };
@@ -19,6 +23,8 @@ nrf_handle_t nrf;
 
 int help(void);
 int version(void);
+int set_mode(const char *mode);
+int set_tx_addr(const char *addr);
 int unused_t(void);
 int unused_r(void);
 
@@ -40,12 +46,19 @@ int main(int argc, char *argv[]) {
             case 'r':
                 unused_r();
                 break;
+            case 'm':
+                set_mode(optarg);
+                break;
+            case 's':
+                set_tx_addr(optarg);
             default:
                 break;
         }
     }
     return 0;
 }
+
+
 
 int help(void) {
     printf("This is help text.\r\n");
@@ -55,6 +68,29 @@ int help(void) {
 
 int version(void) {
     printf("This is version.\r\n");
+    return 0;
+}
+
+int set_mode(const char *mode) {
+    if(strcmp(mode, "tx") == 0) {
+        nrf.config.mode = N_MODE_TX;
+    }
+    else if(strcmp(mode, "rx") == 0) {
+        nrf.config.mode = N_MODE_RX;
+    }
+    else {
+        printf("Invalid mode %s.\r\n", mode);
+    }
+    return 0;
+}
+
+int set_tx_addr(const char *addr) {
+    
+    printf("TXAddr: %s", addr);
+    return 0;
+}
+
+int set_rx_addr(char *addr) {
     return 0;
 }
 
@@ -113,7 +149,7 @@ int unused_r(void) {
     }
     nrf.config.mode = N_MODE_TX;
     nrf24_config(&nrf);
-    sleep(1);
+    usleep(500);
     snprintf(payload, 32, "This is PRX test payload");
     if(nrf24_send(&nrf, payload, 1000) == NRF_OK) {
         printf("Send succeed.\r\n");
