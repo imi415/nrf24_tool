@@ -131,6 +131,10 @@ uint8_t nrf24_irq_callback(void *arg) {
     return ret;
 }
 
+uint64_t nrf24_get_tick(nrf24_drv_t *drv) {
+    return nrf24_ms_tick(&drv->hal);
+}
+
 uint8_t nrf24_driver_deinit(nrf24_drv_t *drv) {
     uint8_t ret = nrf24_spi_deinit(&drv->hal);
     if(ret != NRF_OK) {

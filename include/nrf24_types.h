@@ -36,7 +36,13 @@ typedef enum {
     N_POWER_M0
 } nrf_power_t;
 
+typedef enum {
+    N_MODE_TX = 0x00U,
+    N_MODE_RX
+} nrf_mode_t;
+
 typedef struct {
+    nrf_mode_t mode;
     uint8_t channel;
     uint8_t packet_size;
     uint8_t tx_addr[5];

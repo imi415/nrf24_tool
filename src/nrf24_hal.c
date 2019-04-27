@@ -102,11 +102,11 @@ uint8_t nrf24_irq_deinit(nrf24_hal_t *hal) {
     return ret;
 }
 
-uint64_t nrf24_get_tick(nrf24_hal_t *hal) {
+uint64_t nrf24_ms_tick(nrf24_hal_t *hal) {
     struct timeval tv;
     gettimeofday(&tv, NULL);
     uint64_t ms = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-    printf("%ld", ms);
+    return ms;
 }
 
 #endif

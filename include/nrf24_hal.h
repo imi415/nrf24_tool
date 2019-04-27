@@ -15,6 +15,6 @@ uint8_t nrf24_irq_deinit(nrf24_hal_t *hal);
 uint8_t nrf24_spi_deinit(nrf24_hal_t *hal);
 uint8_t nrf24_gpio_init(nrf24_hal_t *hal);
 uint8_t nrf24_gpio_deinit(nrf24_hal_t *hal);
-uint64_t nrf24_get_tick(nrf24_hal_t *hal);
+uint64_t nrf24_ms_tick(nrf24_hal_t *hal);
 
 #endif //NRF24_NRF24_HAL_H
